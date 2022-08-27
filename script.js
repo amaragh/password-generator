@@ -13,7 +13,12 @@ function writePassword() {
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-var generatePassword = function () { }
+var generatePassword = function (passwordLength, charTypeSelection) {
+  var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var lowerChars = upperChars.toLowerCase;
+  var numbers = "0123456789";
+  var specialChars = "~`!@#$%^&*()_-+={[}]|:;<,>.?/";
+}
 
 
 // function to determine the password length
@@ -44,12 +49,12 @@ var charTypeSelection = {
     this.upper = window.prompt("Include uppercase characters? Enter Y for YES and N for NO");
     console.log("Incude upper? " + this.upper);
 
-    this.numeric = window.prompt("Include numeric characters? Enter Y for YES and N for NO"); 
+    this.numeric = window.prompt("Include numeric characters? Enter Y for YES and N for NO");
     console.log("Incude numeric? " + this.numeric);
 
-    this.special = window.prompt("Include special characters? Enter Y for YES and N for NO"); 
+    this.special = window.prompt("Include special characters? Enter Y for YES and N for NO");
     console.log("Incude special? " + this.special);
-   
+
     // convert values to upper case
     this.lower = this.lower.toUpperCase();
     this.upper = this.upper.toUpperCase();
@@ -59,7 +64,7 @@ var charTypeSelection = {
     // check if user selected yes to include any of the character types 
     if (!(Object.values(this).indexOf('Y') > -1)) {
       console.log("NOT good to go");
-      window.alert("You did not include any of the characters types. ")
+      window.alert("You did not include any of the characters types. You must select least one type to generate a password.")
       return this.charTypePrompts();
     }
   }
