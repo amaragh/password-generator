@@ -3,56 +3,62 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword(passwordLength(), charTypeSelection.charTypePrompts());
+  var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-
-
 }
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-var generatePassword = function (length, charType) {
+var generatePassword = function () {
+
+  var length = passwordLength();
 
   var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   var lowerChars = "abcdefghijklmnopqrstuvwxyz";
   var numbers = "0123456789";
   var specialChars = "~`!@#$%^&*()_-+={[}]|:;<,>.?/";
 
+  // initialize array to store the strings from which the password characters will be selected
   var passwordSources = [];
 
+  charTypeSelection.charTypePrompts();
+
+  // if user opted to include a character type, add the string of corresponding characters to the passwordSources array
   if (charTypeSelection.lower == "Y") {
     passwordSources.push(lowerChars);
   }
   if (charTypeSelection.upper == "Y") {
-    // passwordSource += upperChars;
     passwordSources.push(upperChars);
   }
   if (charTypeSelection.numeric == "Y") {
-    // passwordSource += numbers;
     passwordSources.push(numbers);
   }
   if (charTypeSelection.special == "Y") {
-    // passwordSource += specialChars;
     passwordSources.push(specialChars);
   }
 
   console.log(passwordSources.length);
 
+  // initialize empty string which will store the completed password
   var password = "";
 
   for (i = 0; i < length; i++) {
+    // find index of the source to be used for character selection
     var sourceIndex = Math.floor(Math.random() * passwordSources.length);
     console.log("SOURCE INDEX IS " + sourceIndex);
 
+    // identify the source of the character selection
     var source = passwordSources[sourceIndex];
     console.log("SOURCE IS " + source);
 
+    // find index of the character within the identified source
     var charPosition = Math.floor(Math.random() * source.length);
     console.log("CHARACTER POSITION IS " + charPosition);
 
+    // locate the character within the source and append it to the password
     password += source[charPosition];
     console.log("PASSWORD IS " + password);
   }
