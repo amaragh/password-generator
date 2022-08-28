@@ -3,21 +3,59 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
+  var password = generatePassword(passwordLength(), charTypeSelection.charTypePrompts());
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
+
 
 }
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-var generatePassword = function (passwordLength, charTypeSelection) {
+var generatePassword = function (length, charType) {
+
   var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var lowerChars = upperChars.toLowerCase;
+  var lowerChars = "abcdefghijklmnopqrstuvwxyz";
   var numbers = "0123456789";
   var specialChars = "~`!@#$%^&*()_-+={[}]|:;<,>.?/";
+
+  var passwordSources = [];
+
+  if (charTypeSelection.lower == "Y") {
+    passwordSources.push(lowerChars);
+  }
+  if (charTypeSelection.upper == "Y") {
+    // passwordSource += upperChars;
+    passwordSources.push(upperChars);
+  }
+  if (charTypeSelection.numeric == "Y") {
+    // passwordSource += numbers;
+    passwordSources.push(numbers);
+  }
+  if (charTypeSelection.special == "Y") {
+    // passwordSource += specialChars;
+    passwordSources.push(specialChars);
+  }
+
+  console.log(passwordSources.length);
+
+  var password = "";
+
+  for (i = 0; i < length; i++) {
+    var sourceIndex = Math.floor(Math.random() * passwordSources.length);
+    console.log("SOURCE INDEX IS " + sourceIndex);
+
+    var source = passwordSources[sourceIndex];
+    console.log("SOURCE IS " + source);
+
+    var charPosition = Math.floor(Math.random() * source.length);
+    console.log("CHARACTER POSITION IS " + charPosition);
+
+    password += source[charPosition];
+    console.log("PASSWORD IS " + password);
+  }
 }
 
 
@@ -25,14 +63,15 @@ var generatePassword = function (passwordLength, charTypeSelection) {
 var passwordLength = function () {
   // prompt the user for the password length
   var promptLength = window.prompt("Please enter a password length from 8 to 128 characters.")
+  console.log("Password length = " + promptLength)
 
   // validate whether the entered value is a number from 8 to 128
   if (!(promptLength >= 8) || !(promptLength <= 128)) {
     window.alert("Invalid entry! Enter a new value.");
+    // have the user try again by re-running the function
     return passwordLength();
   }
   else {
-    // have the user try again by re-running the function
     return promptLength;
   }
 }
@@ -44,16 +83,16 @@ var charTypeSelection = {
   special: "",
   charTypePrompts: function () {
     this.lower = window.prompt("Include lowercase characters? Enter Y for YES and N for NO");
-    console.log("Incude lower? " + this.lower);
+    // console.log("Incude lower? " + this.lower);
 
     this.upper = window.prompt("Include uppercase characters? Enter Y for YES and N for NO");
-    console.log("Incude upper? " + this.upper);
+    // console.log("Incude upper? " + this.upper);
 
     this.numeric = window.prompt("Include numeric characters? Enter Y for YES and N for NO");
-    console.log("Incude numeric? " + this.numeric);
+    // console.log("Incude numeric? " + this.numeric);
 
     this.special = window.prompt("Include special characters? Enter Y for YES and N for NO");
-    console.log("Incude special? " + this.special);
+    // console.log("Incude special? " + this.special);
 
     // convert values to upper case
     this.lower = this.lower.toUpperCase();
@@ -63,7 +102,6 @@ var charTypeSelection = {
 
     // check if user selected yes to include any of the character types 
     if (!(Object.values(this).indexOf('Y') > -1)) {
-      console.log("NOT good to go");
       window.alert("You did not include any of the characters types. You must select least one type to generate a password.")
       return this.charTypePrompts();
     }
@@ -72,22 +110,16 @@ var charTypeSelection = {
 
 
 
-// var characterTypes = function () {
-//   charTypeSelection.lower 
-//   console.log(charTypeSelection.lower);
+// console.log("Password length = " + passwordLength());
+// charTypeSelection.charTypePrompts();
+// console.log(charTypeSelection);
+// console.log(charTypeSelection.lower);
+// console.log(charTypeSelection.upper);
+// console.log(charTypeSelection.numeric);
+// console.log(charTypeSelection.special);
 
-// }
+// console.log(generatePassword());
 
-console.log("Password length = " + passwordLength());
-// console.log("character types = " + characterTypes());
-charTypeSelection.charTypePrompts();
-console.log(charTypeSelection);
-
-// GIVEN I need a new, secure password
-// WHEN I click the button to generate a password
-// THEN I am presented with a series of prompts for password criteria
-// WHEN prompted for password criteria
-// THEN I select which criteria to include in the password
 
 // WHEN prompted for the length of the password
 // THEN I choose a length of at least 8 characters and no more than 128 characters
